@@ -1,0 +1,11 @@
+version: "3.4"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    command: npm start
+    volumes:
+      - .:/workdir
+    ports:
+      - 4928:4928
