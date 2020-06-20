@@ -3,9 +3,6 @@ FROM node:10.15.3 as builder
 ENV WORKDIR=/workdir
 WORKDIR $WORKDIR
 
-USER node
-
-
 COPY package.json package-lock.json $WORKDIR/
 RUN npm ci --no-progress
 RUN npx gitbook install
