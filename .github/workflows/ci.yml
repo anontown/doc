@@ -3,32 +3,11 @@ name: ci
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: build
-        run: make -f ci.Makefile build REPO=test VER=test
   build-and-push:
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
-    needs: [build]
     runs-on: ubuntu-latest
-    env:
-      REPO: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v1
-      - name: set version
-        run: |
-          VER=${GITHUB_SHA::7}
-          if [ "$GITHUB_REF" = "refs/heads/develop" ]; then
-            VER=${VER}-dev
-          fi
-          echo ::set-env name=VER::${VER}
-      - name: build
-        run: make build REPO=$REPO VER=$VER
-      - name: docker login
-        run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $PERSONAL_TOKEN
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-      - name: push
-        run: make push REPO=$REPO VER=$VER
+      - uses: anontown/docker-image-action@master
+        with:
+          image-name: at-doc
+          personal-token: ${{ secrets.PERSONAL_TOKEN }}
