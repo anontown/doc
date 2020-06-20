@@ -1,0 +1,13 @@
+name: ci
+
+on: [push]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: anontown/docker-image-action@master
+        with:
+          image-name: at-doc
+          personal-token: ${{ secrets.PERSONAL_TOKEN }}
